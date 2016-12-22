@@ -18,6 +18,7 @@
             "email": "arogachev90@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
         "yiisoft/yii2": "*",
         "phpoffice/phpexcel": "1.8.*"

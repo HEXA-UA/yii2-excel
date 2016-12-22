@@ -5,6 +5,7 @@ namespace arogachev\excel\import\basic;
 use arogachev\excel\components\Attribute as BaseAttribute;
 use arogachev\excel\import\exceptions\CellException;
 use PHPExcel_Cell;
+use PHPExcel_Shared_Date;
 use yii\base\Component;
 use yii\base\InvalidParamException;
 use yii\db\ActiveQuery;
@@ -38,6 +39,7 @@ class Attribute extends BaseAttribute
 
     /**
      * @param boolean $throwException
+     *
      * @throws CellException
      * @throws InvalidParamException
      */
@@ -48,7 +50,10 @@ class Attribute extends BaseAttribute
         }
 
         $valueReplacement = $this->_standardAttribute->valueReplacement;
-        $cellValue = $this->cell->getValue();
+        $cellValue        = $this->cell->getValue();
+        if (PHPExcel_Shared_Date::isDateTime($this->cell)) {
+            $cellValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue);
+        }
         $value = null;
 
         if (is_array($valueReplacement)) {
@@ -77,7 +82,7 @@ class Attribute extends BaseAttribute
         }
 
         if ($value !== null) {
-            $this->_value = $value;
+            $this->_value    = $value;
             $this->_replaced = true;
         }
     }
